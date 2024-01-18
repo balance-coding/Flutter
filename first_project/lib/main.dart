@@ -1,6 +1,9 @@
+import 'package:first_project/screen/main_screen.dart';
+import 'package:first_project/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  // 프로그램의 시작 지점(메인 함수)
   runApp(const MyApp());
 }
 
@@ -10,116 +13,74 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // MaterialApp: 전반적인 모든 화면 담당
+    // <-> Scaffold: Material Design을 쓸 수 있는 기본 화면 구성 단위
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Flutter Demo',  // 실제로 화면에 표현 X
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //   useMaterial3: true,
+      // ),
+      // 화면 관리 더 용이하게
+      initialRoute: '/',  // navigate
+      routes: { // 라우터 패턴 구조
+        '/':(context) => SplashScreen(),
+        '/main':(context) => MainScreen(),
+      },
+      // home: const MainScreen2(),  // 최초로 시작되는 화면
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+/*/// 위젯이란?(Widget) - 앱의 모든 구성요소를 나타내며, 화면에 그려지는 모든 것을 위젯으로 표현할 수 있다!
+/// 다양한 종류와 계층구조로 구성되어 있음!
+///
+/// Stateless Widget (상태가 없는 위젯)
+/// - 한 번 생성되면 내부데이터나 상태를 변경할 수 없고, UI를 그리기 위한 정보만을 가짐
+class MainScreen extends StatelessWidget{
+  const MainScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  Widget build(BuildContext context){
+    // return const Placeholder();
+    /// Material Design 스타일의 앱을 개발할 때 기본적인 앱의 레이아웃 구조를 정의하고,
+    /// 주요 기본 UI 요소를 제공하는 중요한 위젯
+    return Scaffold(appBar: AppBar(title: Text('My first app')), body: Text('Hello'),);
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+// stful
+/// Stateful Widget
+/// - 상태를 가지는 위젯이며, 사용자 상호 작용 또는 다른 이벤트에 따라 상태를 변경할 수 있다.
+/// 대체 왜 2가지 종류의 State 위젯이 존재하는 것일까?
+/// 퍼포먼스의 차이!!
+/// 화면 변동이 없는 경우에는 stateless
+/// 화면 변동이 있는 경우에는 stateful widget을 사용!
+class MainScreen2 extends StatefulWidget {
+  const MainScreen2({super.key});
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  State<MainScreen2> createState() => _MainScreen2State();
+}
+
+class _MainScreen2State extends State<MainScreen2> {
+  String msg = 'android';
+
+  @override
+  void initState() {
+    // 최초에 한 번 실행되는 영역
+    super.initState();
+
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        msg = 'kim';
+      });
+    },);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    return Scaffold(appBar: AppBar(title: Text('My first app')), body: Text(msg),);
   }
-}
+}*/
+
