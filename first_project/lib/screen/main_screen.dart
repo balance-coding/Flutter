@@ -7,17 +7,24 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen>{
+class _MainScreenState extends State<MainScreen> {
+  List lstHello = ['kim', 'hello', 'new', 'good day', 'have a nice day'];
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('main'),
       ),
-      body: ListView.builder(itemBuilder: (context, index) {
-        
-      },),
-    )
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text('${lstHello[index]}'),
+            subtitle: Text('subtitle'),
+          );
+        },
+        itemCount: lstHello.length,
+      ),
+    );
   }
 }
 
